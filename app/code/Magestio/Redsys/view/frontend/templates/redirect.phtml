@@ -1,0 +1,28 @@
+<style>
+    .redsys-message {
+        background: #f7f7f7;
+        margin: auto;
+        margin-top: 40px;
+        padding: 40px 24px 40px;
+        color: #666;
+        text-align: center;
+        width: 100%;
+        max-width: 480px;
+        font-family: "Open Sans", Hevetica, Arial;
+    }
+</style>
+
+<form action="<?php echo $this->getEnvironment(); ?>" method="post" id="redsys_form" name="redsys_form">
+    <input type="hidden" name="Ds_SignatureVersion" value="<?php echo $this->getSignatureVersion(); ?>" />
+    <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $this->getParameters();  ?>" />
+    <input type="hidden" name="Ds_Signature" value="<?php echo $this->getSignature(); ?>" />
+</form>
+
+<div class="redsys-message">
+    <h4><?php echo __("Redirecting to Redsys TPV... Please wait."); ?></h4>
+    <p><?php echo __("Thanks for trusting us. In a few seconds you will be redirected to the payment platform."); ?></p>
+    <p><?php echo __("If your browser does not redirect you automatically click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>here</a> to carry out the payment."); ?></p>
+</div>
+<script type="text/javascript">
+    document.redsys_form.submit();
+</script>

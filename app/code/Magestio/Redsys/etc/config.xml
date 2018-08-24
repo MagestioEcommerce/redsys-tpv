@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <redsys>
+                <debug>1</debug>
+                <active>1</active>
+                <model>RedsysFacade</model>
+                <merchant_gateway_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <order_status>pending_payment</order_status>
+                <payment_action>authorize</payment_action>
+                <title>Redsys Payment Gateway</title>
+                <currency>EUR</currency>
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <sort_order>1</sort_order>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys></paymentInfoKeys>
+                <privateInfoKeys></privateInfoKeys>
+                <autoinvoice>1</autoinvoice>
+                <sendinvoice>1</sendinvoice>
+                <recovery_cart>1</recovery_cart>
+            </redsys>
+        </payment>
+    </default>
+</config>
