@@ -4,7 +4,7 @@
 
 ### Features
 
-* Developed with the new API Getway Payment of Magento 2
+* Developed with the new API Getway Payment of Magento 2 [Magento 2 Payment Provider Gateway](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
 * Allow customers to pay with credit or debit cards
 * Secure payment throught Redsys Payment Gateway
 * Customers can change the payment method if Redsys fails
@@ -34,6 +34,10 @@ php bin/magento setup:di:compile
 php bin/magento cache:flush
 php bin/magento setup:static-content:deploy
 ```
+
+### Requirements
+
+* Compatible with Magento 2.2.+
 
 ### Technical support
 
