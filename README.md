@@ -4,7 +4,7 @@
 
 ### Features
 
-* Developed with the new API Gateway Payment of Magento 2 [Magento 2 Payment Provider Gateway](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
+* Developed with the new API Gateway Payment of Magento 2 [Magento 2 Payment Gateway API](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
 * Allow customers to pay with credit or debit cards
 * Secure payment throught Redsys Payment Gateway
 * Customers can change the payment method if Redsys fails
