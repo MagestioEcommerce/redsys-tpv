@@ -1,31 +1,31 @@
-# Redsys TPV extension for Magento 2
+# Extension TPV Redsys para Magento 2
 
 [![N|Solid](https://magestio.com/wp-content/uploads/logo_web_r.png)](https://magestio.com)
 
-### Features
+### Características
 
-* Developed with the new API Gateway Payment of Magento 2 [Magento 2 Payment Gateway API](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
-* Allow customers to pay with credit or debit cards
-* Secure payment throught Redsys Payment Gateway
-* Customers can change the payment method if Redsys fails
-* Recovery cart if payment fails
-* Automatic invoice
-* Send invoice to the customer
+* Desarrollado con la nueva API Gateway Payment de Magento 2 [Magento 2 Payment Gateway API](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
+* Permite a los clientes pagar con tarjetas de crédito o débito
+* Pagos seguros a través de la Pasarela de Pago de Redsys
+* Los clientes pueden cambiar de método de pago en caso de fallo
+* Recupera el carrito en caso de fallo
+* Crea facturas automáticamente
+* Envía facturas automáticamente al cliente
 * Compatible with HTTPS/SSL
-* Redsys Gateway will use the same language that the store
-* Multiple currency
-* Production and Test environment
-* Multi store
+* La Pasarela de Pago de Redsys utilizara el mismo idioma que la tienda
+* Múltiples monedas
+* Entornos de Producción y Test
+* Multi tienda
 
 
-### Installation
+### Instalación
 
-* Download the extension
-* Unzip the file
-* Copy the content from the unzip folder to Magento root
+* Descarga la extensión
+* Descomprime el archivo
+* Copia el contenido del archivo a la carpeta raíz de Magento
 
 
-### Enable extension
+### Habilitar extensión
 
 ```
 php bin/magento module:enable Magestio_Redsys
@@ -35,10 +35,10 @@ php bin/magento cache:flush
 php bin/magento setup:static-content:deploy
 ```
 
-### Requirements
+### Requisitos
 
 * Compatible with Magento 2.2.+
 
-### Technical support
+### Soporte técnico
 
 * Web: [https://magestio.com/](https://magestio.com/)
