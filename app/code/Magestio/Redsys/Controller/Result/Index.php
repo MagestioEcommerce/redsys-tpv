@@ -158,7 +158,7 @@ class Index extends Action
         $api = $this->getApi();
         $responseCode = intval($api->getParameter('Ds_Response'));
         $authorisationCode = $api->getParameter('Ds_AuthorisationCode');
-        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %1)', $responseCode, $authorisationCode));
+        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %2)', $responseCode, $authorisationCode));
         $payment->addTransactionCommentsToOrder($transaction, $message);
 
         $this->orderRepository->save($order);
@@ -189,7 +189,7 @@ class Index extends Action
                 throw new LocalizedException(__('You can\'t create an invoice without products.'));
             }
 
-            $invoice->setRequestedCaptureCase(Invoice::NOT_CAPTURE);
+            $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
 
             $invoice->register();
 
