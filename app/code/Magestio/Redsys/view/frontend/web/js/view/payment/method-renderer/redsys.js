@@ -31,7 +31,6 @@ define(
                 };
             },
 
-            /* Magestio */
             afterPlaceOrder: function () {
                 $.mage.redirect(
                     url.build(window.checkoutConfig.payment.redsys.redirectUrl)

@@ -16,6 +16,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Framework\DB\Transaction;
 use Magento\Sales\Model\Order\Payment\Transaction as PaymentTransaction;
+use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 use Magestio\Redsys\Helper\Helper;
 use Magestio\Redsys\Logger\Logger;
 use Magestio\Redsys\Model\RedsysApi;
@@ -81,6 +82,7 @@ class Index extends Action
      * @param ResultFactory $resultRedirectFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param OrderRepositoryInterface $orderRepository
+     * @param OrderSender $orderSender
      * @param Helper $helper
      * @param Logger $logger
      */
@@ -91,6 +93,7 @@ class Index extends Action
         ResultFactory $resultRedirectFactory,
         ScopeConfigInterface $scopeConfig,
         OrderRepositoryInterface $orderRepository,
+        OrderSender $orderSender,
         Helper $helper,
         Logger $logger
     ) {
@@ -100,6 +103,7 @@ class Index extends Action
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->scopeConfig = $scopeConfig;
         $this->orderRepository = $orderRepository;
+        $this->orderSender = $orderSender;
         $this->helper = $helper;
         $this->logger = $logger;
     }
@@ -160,6 +164,8 @@ class Index extends Action
         $authorisationCode = $api->getParameter('Ds_AuthorisationCode');
         $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %2)', $responseCode, $authorisationCode));
         $payment->addTransactionCommentsToOrder($transaction, $message);
+
+        $this->orderSender->send($order);
 
         $this->orderRepository->save($order);
 
