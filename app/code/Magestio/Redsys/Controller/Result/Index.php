@@ -3,6 +3,10 @@
 namespace Magestio\Redsys\Controller\Result;
 
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Service\InvoiceService;
 use Magento\Sales\Model\Order\Invoice;
@@ -14,9 +18,9 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 use Magento\Framework\DB\Transaction;
 use Magento\Sales\Model\Order\Payment\Transaction as PaymentTransaction;
-use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 use Magestio\Redsys\Helper\Helper;
 use Magestio\Redsys\Logger\Logger;
 use Magestio\Redsys\Model\RedsysApi;
@@ -26,7 +30,7 @@ use Magestio\Redsys\Model\ConfigInterface;
  * Class Index
  * @package Magestio\Redsys\Controller\Result
  */
-class Index extends Action
+class Index extends Action implements CsrfAwareActionInterface, HttpPostActionInterface
 {
 
     /**
@@ -53,6 +57,11 @@ class Index extends Action
      * @var OrderRepositoryInterface
      */
     protected $orderRepository;
+
+    /**
+     * @var OrderSender
+     */
+    protected $orderSender;
 
     /**
      * @var Helper
@@ -121,6 +130,16 @@ class Index extends Action
             return $resultRedirect;
         }
     }
+
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
+    }
     
     protected function process()
     {
@@ -162,12 +181,17 @@ class Index extends Action
         $api = $this->getApi();
         $responseCode = intval($api->getParameter('Ds_Response'));
         $authorisationCode = $api->getParameter('Ds_AuthorisationCode');
-        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %2)', $responseCode, $authorisationCode));
+        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %1)', $responseCode, $authorisationCode));
         $payment->addTransactionCommentsToOrder($transaction, $message);
 
-        $this->orderSender->send($order);
-
         $this->orderRepository->save($order);
+
+        // send Order email
+        try {
+            $this->orderSender->send($order, true);
+        } catch (\Exception $e) {
+            $this->logger->critical($e);
+        }
 
     }
 
@@ -195,7 +219,7 @@ class Index extends Action
                 throw new LocalizedException(__('You can\'t create an invoice without products.'));
             }
 
-            $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
+            $invoice->setRequestedCaptureCase(Invoice::NOT_CAPTURE);
 
             $invoice->register();
 

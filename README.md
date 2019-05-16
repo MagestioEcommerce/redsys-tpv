@@ -37,7 +37,7 @@ php bin/magento setup:static-content:deploy
 
 ### Requisitos
 
-* Compatible with Magento 2.2.+
+* Compatible with Magento 2.3.+
 
 ### Soporte técnico
 
