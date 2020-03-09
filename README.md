@@ -13,6 +13,8 @@
 * Envía facturas automáticamente al cliente
 * Compatible with HTTPS/SSL
 * La Pasarela de Pago de Redsys utilizara el mismo idioma que la tienda
+* Compatible con la funcionalidad de redsys de redirección automática a la paǵina de pedido realizado con éxito de Magento
+  * Para que esto funcione, en la configuración del tpv Redsys, en el apartado Comercio asignar el campo "Parámetros en las URLs" a "Si, sin mostrar recibo Redsys".
 * Múltiples monedas
 * Entornos de Producción y Test
 * Multi tienda
