@@ -4,63 +4,63 @@
         <section id="payment">
             <group id="redsys" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Redsys</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Title</label>
                 </field>
-                <field id="environment" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="environment" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Environment</label>
                     <source_model>Magestio\Redsys\Model\System\Config\Source\Environment</source_model>
                     <comment><![CDATA[Real Enviroment: https://sis.redsys.es/sis/realizarPago/utf-8 Test Enviroment: https://sis-t.redsys.es:25443/sis/realizarPago/utf-8]]></comment>
                 </field>
-                <field id="commerce_name" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="commerce_name" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Commerce Name</label>
                 </field>
-                <field id="commerce_num" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="commerce_num" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Commerce Number(FUC)</label>
                 </field>
-                <field id="key256" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="key256" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Secret Encrypted Key (SHA-256)</label>
                 </field>
-                <field id="terminal" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="terminal" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Terminal Number</label>
                 </field>
-                <field id="transaction_type" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="transaction_type" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Transaction Type</label>
                 </field>
-                <field id="languages" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="languages" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Allow TPV Languages</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="autoinvoice" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="autoinvoice" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Create invoice automatically</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment><![CDATA[Only if payment is completed successfully]]></comment>
                 </field>
-                <field id="sendinvoice" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sendinvoice" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Send Email Customer Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="autoinvoice">1</field>
                     </depends>
                 </field>
-                <field id="recovery_cart" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="recovery_cart" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Recovery cart</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment><![CDATA[In case of failure the client does not lose Cart]]></comment>
                 </field>
-                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="130" showInDefault="9" showInWebsite="1" showInStore="0">
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="130" showInDefault="9" showInWebsite="1" showInStore="1">
                     <label>Payment From Applicable Countries</label>
                     <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                 </field>
-                <field id="specificcountry" translate="label" type="multiselect" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment From Specific Countries</label>
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                 </field>
-                <field id="sort_order" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sort_order" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
                 </field>
