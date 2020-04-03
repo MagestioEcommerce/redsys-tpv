@@ -1,0 +1,26 @@
+{
+    "name": "PauGNU/redsys-tpv",
+    "description": "Redsys TPV integration module for Magento 2",
+    "type": "magento2-module",
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": "~7.1.3||~7.2.0||~7.3.0",
+        "magento/framework": "102.0.*",
+        "magento/module-cms": "103.0.*"
+    },
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magestio\\Redsys\\": ""
+        }
+    },
+    "version": "1.0.0"
+}
