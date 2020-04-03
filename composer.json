@@ -1,5 +1,5 @@
 {
-    "name": "PauGNU/redsys-tpv",
+    "name": "catgento/redsys-tpv",
     "description": "Redsys TPV integration module for Magento 2",
     "type": "magento2-module",
     "config": {
