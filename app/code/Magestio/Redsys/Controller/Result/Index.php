@@ -21,6 +21,7 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 use Magento\Framework\DB\Transaction;
 use Magento\Sales\Model\Order\Payment\Transaction as PaymentTransaction;
+use Magento\Framework\DB\TransactionFactory;
 use Magestio\Redsys\Helper\Helper;
 use Magestio\Redsys\Logger\Logger;
 use Magestio\Redsys\Model\RedsysApi;
@@ -79,6 +80,11 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
     protected $order = null;
 
     /**
+     * @var TransactionFactory
+     */
+    protected $transactionFactory;
+
+    /**
      * @var RedsysApi
      */
     protected $api = null;
@@ -89,27 +95,31 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
      * @param InvoiceService $invoiceService
      * @param InvoiceSender $invoiceSender
      * @param ResultFactory $resultRedirectFactory
+     * @param TransactionFactory $transactionFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param OrderRepositoryInterface $orderRepository
      * @param OrderSender $orderSender
      * @param Helper $helper
      * @param Logger $logger
      */
-	public function __construct(
-		Context $context,
+    public function __construct(
+        Context $context,
         InvoiceService $invoiceService,
         InvoiceSender $invoiceSender,
         ResultFactory $resultRedirectFactory,
+        TransactionFactory $transactionFactory,
         ScopeConfigInterface $scopeConfig,
         OrderRepositoryInterface $orderRepository,
         OrderSender $orderSender,
         Helper $helper,
         Logger $logger
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->invoiceService = $invoiceService;
         $this->invoiceSender = $invoiceSender;
         $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->transactionFactory = $transactionFactory;
         $this->scopeConfig = $scopeConfig;
         $this->orderRepository = $orderRepository;
         $this->orderSender = $orderSender;
@@ -140,7 +150,7 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
     {
         return true;
     }
-    
+
     protected function process()
     {
         try {
@@ -153,7 +163,7 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
                 $this->processOrder();
                 $this->processInvoice();
             } else {
-                $errorMessage = $this->helper->messageResponse($responseCode)." ".__("(response:%1)",$responseCode);
+                $errorMessage = $this->helper->messageResponse($responseCode) . " " . __("(response:%1)", $responseCode);
                 $this->helper->cancelOrder($this->getOrder(), $errorMessage);
             }
 
@@ -219,17 +229,18 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
                 throw new LocalizedException(__('You can\'t create an invoice without products.'));
             }
 
-            $invoice->setRequestedCaptureCase(Invoice::NOT_CAPTURE);
+            $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
 
             $invoice->register();
 
-            $invoice->getOrder()->setCustomerNoteNotify(true);
+            $invoice->getOrder()->setCustomerNoteNotify(false);
             $invoice->getOrder()->setIsInProcess(true);
 
-            $transactionSave = $this->_objectManager->create(Transaction::class)
+            $transactionSave = $this->transactionFactory
+                ->create()
                 ->addObject($invoice)
-                ->addObject($invoice->getOrder());
-
+                ->addObject($invoice->getOrder()
+                );
             $transactionSave->save();
 
             // send invoice email
