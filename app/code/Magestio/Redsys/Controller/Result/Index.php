@@ -197,10 +197,12 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
         $this->orderRepository->save($order);
 
         // send Order email
-        try {
-            $this->orderSender->send($order, true);
-        } catch (\Exception $e) {
-            $this->logger->critical($e);
+        if ($order->getCanSendNewEmailFlag()) {
+            try {
+                    $this->orderSender->send($order);
+            } catch (\Exception $e) {
+                $this->logger->critical($e);
+            }
         }
 
     }
