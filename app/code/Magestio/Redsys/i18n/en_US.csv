@@ -21,7 +21,7 @@
 "We are sorry, something was wrong with payment. Try again or select another payment method.","We are sorry, something was wrong with payment. Try again or select another payment method."
 "Redirecting...","Redirecting..."
 "(response:%1)","(response:%1)"
-"TPV payment accepted. (response: %1, authorization: %1)","TPV payment accepted. (response: %1, authorization: %1)"
+"TPV payment accepted. (response: %1, authorization: %2)","TPV payment accepted. (response: %1, authorization: %2)"
 "The order does not allow an invoice to be created.","The order does not allow an invoice to be created."
 "We can't save the invoice right now.","We can't save the invoice right now."
 "You can't create an invoice without products.","You can't create an invoice without products."

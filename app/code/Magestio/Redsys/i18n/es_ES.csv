@@ -21,7 +21,7 @@
 "We are sorry, something was wrong with payment. Try again or select another payment method.","Lo sentimos, el pago ha fallado. Vuelva a intentarlo o seleccione otro método de pago."
 "Redirecting...","Redireccionando..."
 "(response:%1)","(respuesta:%1)"
-"TPV payment accepted. (response: %1, authorization: %1)","Pago aceptado. (respuesta: %1, autorización: %1)"
+"TPV payment accepted. (response: %1, authorization: %2)","Pago aceptado. (respuesta: %1, autorización: %2)"
 "The order does not allow an invoice to be created.","El pedido no permite la creación de una factura."
 "We can't save the invoice right now.","No se puede guardar la factura."
 "You can't create an invoice without products.","No se puede crear una factura sin productos."

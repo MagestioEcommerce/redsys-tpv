@@ -191,7 +191,7 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
         $api = $this->getApi();
         $responseCode = intval($api->getParameter('Ds_Response'));
         $authorisationCode = $api->getParameter('Ds_AuthorisationCode');
-        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %1)', $responseCode, $authorisationCode));
+        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %2)', $responseCode, $authorisationCode));
         $payment->addTransactionCommentsToOrder($transaction, $message);
 
         $this->orderRepository->save($order);
