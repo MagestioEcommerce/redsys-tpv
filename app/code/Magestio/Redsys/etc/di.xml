@@ -3,26 +3,41 @@
     <!-- Payment Method Facade configuration -->
     <virtualType name="RedsysFacade" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Magestio\Redsys\Model\Ui\ConfigProvider::CODE</argument>
+            <argument name="code" xsi:type="const">Magestio\Redsys\Model\Ui\RedsysConfigProvider::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">Magestio\Redsys\Block\Info</argument>
+            <argument name="infoBlockType" xsi:type="string">Magestio\Redsys\Block\RedsysInfo</argument>
             <argument name="valueHandlerPool" xsi:type="object">RedsysValueHandlerPool</argument>
             <argument name="commandPool" xsi:type="object">RedsysCommandPool</argument>
         </arguments>
     </virtualType>
 
-    <!-- Configuration reader -->
-    <type name="Magestio\Redsys\Gateway\Config\Config">
+    <virtualType name="BizumFacade" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Magestio\Redsys\Model\Ui\ConfigProvider::CODE</argument>
+            <argument name="code" xsi:type="const">Magestio\Redsys\Model\Ui\BizumConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magestio\Redsys\Block\BizumInfo</argument>
+            <argument name="valueHandlerPool" xsi:type="object">BizumValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">RedsysCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+    <type name="Magestio\Redsys\Gateway\Config\Redsys">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Magestio\Redsys\Model\Ui\RedsysConfigProvider::CODE</argument>
+        </arguments>
+    </type>
+    <type name="Magestio\Redsys\Gateway\Config\Bizum">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Magestio\Redsys\Model\Ui\BizumConfigProvider::CODE</argument>
         </arguments>
     </type>
 
-    <virtualType name="RedsysGatewayCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+    <!-- <virtualType name="RedsysGatewayCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="logger" xsi:type="object">Magestio\Redsys\Logger\Logger</argument>
         </arguments>
-    </virtualType>
+    </virtualType> -->
 
     <!-- Commands infrastructure -->
     <virtualType name="RedsysCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
@@ -46,13 +61,30 @@
     </virtualType>
     <virtualType name="RedsysConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
-            <argument name="configInterface" xsi:type="object">Magestio\Redsys\Gateway\Config\Config</argument>
+            <argument name="configInterface" xsi:type="object">Magestio\Redsys\Gateway\Config\Redsys</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BizumValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">BizumConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BizumConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">Magestio\Redsys\Gateway\Config\Bizum</argument>
         </arguments>
     </virtualType>
 
-    <type name="Magestio\Redsys\Block\Info">
+    <type name="Magestio\Redsys\Block\RedsysInfo">
         <arguments>
-            <argument name="config" xsi:type="object">Magestio\Redsys\Gateway\Config\Config</argument>
+            <argument name="config" xsi:type="object">Magestio\Redsys\Gateway\Config\Redsys</argument>
+        </arguments>
+    </type>
+    <type name="Magestio\Redsys\Block\BizumInfo">
+        <arguments>
+            <argument name="config" xsi:type="object">Magestio\Redsys\Gateway\Config\Bizum</argument>
         </arguments>
     </type>
 

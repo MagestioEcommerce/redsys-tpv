@@ -16,6 +16,7 @@
     <input type="hidden" name="Ds_SignatureVersion" value="<?php echo $this->getSignatureVersion(); ?>" />
     <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $this->getParameters();  ?>" />
     <input type="hidden" name="Ds_Signature" value="<?php echo $this->getSignature(); ?>" />
+    <input type="submit"/>
 </form>
 
 <div class="redsys-message">
@@ -24,5 +25,5 @@
     <p><?php echo __("If your browser does not redirect you automatically click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>here</a> to carry out the payment."); ?></p>
 </div>
 <script type="text/javascript">
-    document.redsys_form.submit();
+    //document.redsys_form.submit();
 </script>

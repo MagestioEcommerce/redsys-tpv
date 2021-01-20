@@ -5,7 +5,7 @@ namespace Magestio\Redsys\Model;
 /**
  * Interface ConfigInterface
  */
-interface ConfigInterface 
+interface ConfigInterface
 {
 
 	const REDSYS_DEVELOPMENT_ENVIRONMENT    = 0;
@@ -17,6 +17,8 @@ interface ConfigInterface
     const REDSYS_PAYMETHODS                 = 'C';
     const REDSYS_DEFAULT_LANGUAGE           = '002';
     const REDSYS_DEFAULT_CURRENCY           = '978';
+
+    const BIZUM_PAYMETHODS                  = 'z';
 
     const XML_PATH_ACTIVE                   = 'payment/redsys/active';
     const XML_PATH_TITLE                    = 'payment/redsys/title';

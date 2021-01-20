@@ -6,6 +6,7 @@
 
 * Desarrollado con la nueva API Gateway Payment de Magento 2 [Magento 2 Payment Gateway API](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
 * Permite a los clientes pagar con tarjetas de crédito o débito
+* Permite a los clientes pagar con Bizum
 * Pagos seguros a través de la Pasarela de Pago de Redsys
 * Los clientes pueden cambiar de método de pago en caso de fallo
 * Recupera el carrito en caso de fallo

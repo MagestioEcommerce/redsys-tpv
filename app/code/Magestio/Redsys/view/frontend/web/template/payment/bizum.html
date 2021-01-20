@@ -4,7 +4,7 @@
                name="payment[method]"
                class="radio"
                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
-        <label class="label redsys-payment-label" data-bind="attr: {'for': getCode()}">
+        <label class="label bizum-payment-label" data-bind="attr: {'for': getCode()}">
             <!-- ko if: showIcons() -->
             <img data-bind="attr: {'src': cardIcons()}" alt="Visa, Maestro, Mastercard" class="icon-cards" style="vertical-align:middle;" />
             <!-- /ko -->

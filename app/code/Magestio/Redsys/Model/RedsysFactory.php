@@ -128,9 +128,10 @@ class RedsysFactory
     }
 
     /**
+     * @param string $method
      * @return \Magestio\Redsys\Model\RedsysApi
      */
-    public function createRedsysObject()
+    public function createRedsysObject($method)
     {
         // Get all module Configurations
         $commerce_name = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_COMMERCE_NAME, ScopeInterface::SCOPE_STORE);
@@ -160,7 +161,7 @@ class RedsysFactory
         $redsysObj->setParameter("Ds_Merchant_Titular", $this->getRedsysCustomer());
         $redsysObj->setParameter("Ds_Merchant_MerchantData", sha1($commerce_url));
         $redsysObj->setParameter("Ds_Merchant_MerchantName", $commerce_name);
-        $redsysObj->setParameter("Ds_Merchant_PayMethods", ConfigInterface::REDSYS_PAYMETHODS);
+        $redsysObj->setParameter("Ds_Merchant_PayMethods", $method);
         $redsysObj->setParameter("Ds_Merchant_Module", "magestio_redsys");
 
         return $redsysObj;

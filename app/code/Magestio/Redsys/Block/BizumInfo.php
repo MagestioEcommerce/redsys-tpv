@@ -7,10 +7,10 @@ use Magento\Payment\Model\Config as PaymentConfig;
 use Magento\Payment\Block\ConfigurableInfo;
 
 /**
- * Class Info
+ * Class BizumInfo
  * @package Magestio\Redsys\Block
  */
-class Info extends ConfigurableInfo
+class BizumInfo extends ConfigurableInfo
 {
 
     /**

@@ -74,7 +74,15 @@ class Redirect extends Template
     private function getRedsysObject()
     {
         if (is_null($this->redsysObj)) {
-            $this->redsysObj = $this->redsysFactory->createRedsysObject();
+
+            $gateway = $this->_request->getParam('gateway');
+            if (!$gateway or $gateway == 'redsys') {
+                $method = ConfigInterface::REDSYS_PAYMETHODS;
+            } else {
+                $method = ConfigInterface::BIZUM_PAYMETHODS;
+            }
+
+            $this->redsysObj = $this->redsysFactory->createRedsysObject($method);
         }
         return $this->redsysObj;
     }

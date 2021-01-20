@@ -15,8 +15,8 @@ define(
 
         return Component.extend({
             defaults: {
-                template: 'Magestio_Redsys/payment/redsys',
-                code: 'redsys'
+                template: 'Magestio_Redsys/payment/bizum',
+                code: 'bizum'
             },
             redirectAfterPlaceOrder: false,
 
@@ -32,16 +32,16 @@ define(
             },
 
             showIcons: function() {
-                return window.checkoutConfig.payment.redsys.showIcon;
+                return window.checkoutConfig.payment.bizum.showIcon;
             },
 
             cardIcons: function(){
-                return window.checkoutConfig.payment.redsys.icons;
+                return window.checkoutConfig.payment.bizum.icons;
             },
 
             afterPlaceOrder: function () {
                 $.mage.redirect(
-                    url.build(window.checkoutConfig.payment.redsys.redirectUrl + '?gateway=' + this.code)
+                    url.build(window.checkoutConfig.payment.bizum.redirectUrl + '?gateway=' + this.code)
                 );
             }
 

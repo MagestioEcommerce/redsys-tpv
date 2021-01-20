@@ -3,18 +3,27 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="redsys_config_provider" xsi:type="object">Magestio\Redsys\Model\Ui\ConfigProvider</item>
+                <item name="redsys_config_provider" xsi:type="object">Magestio\Redsys\Model\Ui\RedsysConfigProvider</item>
+                <item name="bizum_config_provider" xsi:type="object">Magestio\Redsys\Model\Ui\BizumConfigProvider</item>
             </argument>
         </arguments>
     </type>
     <type name="Magento\Payment\Model\CcGenericConfigProvider">
         <arguments>
             <argument name="methodCodes" xsi:type="array">
-                <item name="redsys" xsi:type="const">Magestio\Redsys\Model\Ui\ConfigProvider::CODE</item>
+                <item name="redsys" xsi:type="const">Magestio\Redsys\Model\Ui\RedsysConfigProvider::CODE</item>
+                <item name="bizum" xsi:type="const">Magestio\Redsys\Model\Ui\BizumConfigProvider::CODE</item>
             </argument>
         </arguments>
     </type>
-    <type name="Magestio\Redsys\Block\Info">
+    <type name="Magestio\Redsys\Block\RedsysInfo">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magestio\Redsys\Block\BizumInfo">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item xsi:type="string" name="is_secure_mode">1</item>

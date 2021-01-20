@@ -5,9 +5,10 @@ namespace Magestio\Redsys\Gateway\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
- * Class Config
+ * Class Redsys
+ * @package Magestio\Redsys\Gateway\Config
  */
-class Config extends \Magento\Payment\Gateway\Config\Config
+class Redsys extends \Magento\Payment\Gateway\Config\Config
 {
     const KEY_ACTIVE = 'active';
 

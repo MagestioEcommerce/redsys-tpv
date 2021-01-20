@@ -1,0 +1,19 @@
+.redsys-section .redsys-payment-logo {
+    background: url("images/redsys-logo.png")  no-repeat 0%;
+    height: 100px;
+    width: auto;
+    padding-left: 20rem;
+    display:inline-block;
+    vertical-align: middle;
+}
+.redsys-section .button-container {
+    float: right;
+}
+.redsys-section .redsys-payment-text {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%
+}
+.redsys-section.section-config.with-button .section-config {
+    margin-left: 4rem;
+}
