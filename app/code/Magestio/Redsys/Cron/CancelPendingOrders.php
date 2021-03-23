@@ -79,11 +79,12 @@ class CancelPendingOrders
     public function execute()
     {
         $enabled = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_CANCEL_PENDING_ORDERS);
+        $delay = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_CANCEL_PENDING_ORDERS_DELAY);
         $methodCodes = ['redsys', 'bizum'];
 
         if ($enabled) {
             $today = date("Y-m-d h:i:s");
-            $to = strtotime('-10 min', strtotime($today));
+            $to = strtotime('-' . $delay . ' min', strtotime($today));
             $to = date('Y-m-d h:i:s', $to);
 
             $filterGroupDate = $this->filterGroup;
@@ -94,7 +95,7 @@ class CancelPendingOrders
 
             $filterDate = $this->filterBuilder
                 ->setField('updated_at')
-                ->setConditionType('to')
+                ->setConditionType('from')
                 ->setValue($to)
                 ->create();
             $filterStatus = $this->filterBuilder
@@ -117,10 +118,13 @@ class CancelPendingOrders
             );
             $searchResults = $this->orderRepository->getList($searchCriteria->create());
 
+            var_dump($searchResults->getSelect()->__toString());
+
             /** @var Order $order */
             foreach ($searchResults->getItems() as $order) {
-                $this->logger->info('Canceling order (idle for more than 10 minutes): ' . $order->getIncrementId());
-                $comment = __('Order cancelled because it was idle for more than 10 minutes');
+                echo $order->getIncrementId() . "\n";
+                $this->logger->info('Canceling order (idle for more than ' . $delay . ' minutes): ' . $order->getIncrementId());
+                $comment = __('Order cancelled because it was idle for more than ' . $delay . ' minutes');
                 $order->cancel();
                 $order->addStatusHistoryComment($comment)
                     ->setIsCustomerNotified(false);

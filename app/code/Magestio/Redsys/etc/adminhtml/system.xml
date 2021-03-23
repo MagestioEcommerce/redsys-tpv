@@ -50,12 +50,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment><![CDATA[In case of failure the client does not lose Cart]]></comment>
                 </field>
-                <field id="cancel_pending_orders" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="cancel_pending_orders" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Cancel Pending Orders</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="cancel_pending_orders_delay" translate="label" type="text" sortOrder="161" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Delay to cancel Pending Orders</label>
+                <field id="cancel_pending_orders_delay" translate="label" type="text" sortOrder="115" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Delay to cancel Pending Orders (in minutes)</label>
                     <depends>
                         <field id="cancel_pending_orders">1</field>
                     </depends>

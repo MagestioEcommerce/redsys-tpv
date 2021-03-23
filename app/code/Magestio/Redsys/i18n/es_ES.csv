@@ -35,3 +35,5 @@
 "Redirecting to Redsys TPV... Please wait.","Redireccionando al TPV de Redsys. Por favor espere."
 "Thanks for trusting us. In a few seconds you will be redirected to the payment platform.","Gracias por confiar en nosotros En unos segundos, se le redirigirá a la plataforma de pago."
 "If your browser does not redirect you automatically click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>here</a> to carry out the payment.","Si su navegador no le redirige automáticamente, haga click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>aquí</a> para continuar con el pago."
+"Cancel Pending Orders","Cancelar pedidos pendientes"
+"Delay to cancel Pending Orders (in minutes)","Tiempo de espera antes de cancelar pedidos pendientes (en minutos)"

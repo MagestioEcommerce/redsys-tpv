@@ -25,8 +25,7 @@
                 <autoinvoice>1</autoinvoice>
                 <sendinvoice>1</sendinvoice>
                 <recovery_cart>1</recovery_cart>
-                <cancel_pending_orders>0</cancel_pending_orders>
-                <cancel_pending_orders_delay>21600</cancel_pending_orders_delay>
+                <cancel_pending_orders_delay>360</cancel_pending_orders_delay>
 
                 <!-- This avoid send confirmation email in place order function -->
                 <order_place_redirect_url>https://sis-t.redsys.es:25443/sis/realizarPago/utf-8</order_place_redirect_url>
