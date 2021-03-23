@@ -20,21 +20,23 @@ interface ConfigInterface
 
     const BIZUM_PAYMETHODS                  = 'z';
 
-    const XML_PATH_ACTIVE                   = 'payment/redsys/active';
-    const XML_PATH_TITLE                    = 'payment/redsys/title';
-    const XML_PATH_ENVIRONMENT              = 'payment/redsys/environment';
-    const XML_PATH_COMMERCE_NAME            = 'payment/redsys/commerce_name';
-    const XML_PATH_COMMERCE_NUM             = 'payment/redsys/commerce_num';
-    const XML_PATH_KEY256                   = 'payment/redsys/key256';
-    const XML_PATH_TERMINAL                 = 'payment/redsys/terminal';
-    const XML_PATH_TRANSACTION_TYPE         = 'payment/redsys/transaction_type';
-    const XML_PATH_LANGUAGES                = 'payment/redsys/languages';
-    const XML_PATH_AUTOINVOICE              = 'payment/redsys/autoinvoice';
-    const XML_PATH_SENDINVOICE              = 'payment/redsys/sendinvoice';
-    const XML_PATH_RECOVERY_CART            = 'payment/redsys/recovery_cart';
-    const XML_PATH_DEBUG                    = 'payment/redsys/debug';
-    const XML_PATH_ALLOWSPECIFIC            = 'payment/redsys/allowspecific';
-    const XML_PATH_SPECIFICCOUNTRY          = 'payment/redsys/specificcountry';
-    const XML_PATH_SORT_ORDER               = 'payment/redsys/sort_order';
+    const XML_PATH_ACTIVE                       = 'payment/redsys/active';
+    const XML_PATH_TITLE                        = 'payment/redsys/title';
+    const XML_PATH_ENVIRONMENT                  = 'payment/redsys/environment';
+    const XML_PATH_COMMERCE_NAME                = 'payment/redsys/commerce_name';
+    const XML_PATH_COMMERCE_NUM                 = 'payment/redsys/commerce_num';
+    const XML_PATH_KEY256                       = 'payment/redsys/key256';
+    const XML_PATH_TERMINAL                     = 'payment/redsys/terminal';
+    const XML_PATH_TRANSACTION_TYPE             = 'payment/redsys/transaction_type';
+    const XML_PATH_LANGUAGES                    = 'payment/redsys/languages';
+    const XML_PATH_AUTOINVOICE                  = 'payment/redsys/autoinvoice';
+    const XML_PATH_SENDINVOICE                  = 'payment/redsys/sendinvoice';
+    const XML_PATH_RECOVERY_CART                = 'payment/redsys/recovery_cart';
+    const XML_PATH_CANCEL_PENDING_ORDERS        = 'payment/redsys/cancel_pending_orders';
+    const XML_PATH_CANCEL_PENDING_ORDERS_DELAY  = 'payment/redsys/cancel_pending_orders_delay';
+    const XML_PATH_DEBUG                        = 'payment/redsys/debug';
+    const XML_PATH_ALLOWSPECIFIC                = 'payment/redsys/allowspecific';
+    const XML_PATH_SPECIFICCOUNTRY              = 'payment/redsys/specificcountry';
+    const XML_PATH_SORT_ORDER                   = 'payment/redsys/sort_order';
 
 }
