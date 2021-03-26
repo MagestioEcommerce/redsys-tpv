@@ -60,6 +60,7 @@
                     <depends>
                         <field id="cancel_pending_orders">1</field>
                     </depends>
+                    <comment><![CDATA[Minimum time is 5 minutes]]></comment>
                 </field>
                 <group id="creditcard" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Tarjeta de crédito</label>

@@ -37,3 +37,4 @@
 "If your browser does not redirect you automatically click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>here</a> to carry out the payment.","Si su navegador no le redirige automáticamente, haga click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>aquí</a> para continuar con el pago."
 "Cancel Pending Orders","Cancelar pedidos pendientes"
 "Delay to cancel Pending Orders (in minutes)","Tiempo de espera antes de cancelar pedidos pendientes (en minutos)"
+"Minimum time is 5 minutes","Mínimo 5 minutos"
