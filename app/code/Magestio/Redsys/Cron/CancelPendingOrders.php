@@ -16,6 +16,8 @@ use Magento\Sales\Model\Order;
  */
 class CancelPendingOrders
 {
+    const REDSYS_METHODS = ['redsys', 'bizum'];
+
     /**
      * @var ScopeConfigInterface
      */
@@ -80,9 +82,9 @@ class CancelPendingOrders
     {
         $enabled = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_CANCEL_PENDING_ORDERS);
         $delay = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_CANCEL_PENDING_ORDERS_DELAY);
-        $methodCodes = ['redsys', 'bizum'];
+        $methodCodes = self::REDSYS_METHODS;
 
-        if ($enabled) {
+        if ($enabled && $delay > 0) {
             $today = date("Y-m-d h:i:s");
             $to = strtotime('-' . $delay . ' min', strtotime($today));
             $to = date('Y-m-d h:i:s', $to);
@@ -91,11 +93,9 @@ class CancelPendingOrders
             $filterGroupStatus = clone($filterGroupDate);
             $filterGroupMethod = clone($filterGroupDate);
 
-            $this->logger->info('Retrieving orders to cancel');
-
             $filterDate = $this->filterBuilder
                 ->setField('updated_at')
-                ->setConditionType('from')
+                ->setConditionType('to')
                 ->setValue($to)
                 ->create();
             $filterStatus = $this->filterBuilder
@@ -118,17 +118,14 @@ class CancelPendingOrders
             );
             $searchResults = $this->orderRepository->getList($searchCriteria->create());
 
-            var_dump($searchResults->getSelect()->__toString());
-
             /** @var Order $order */
             foreach ($searchResults->getItems() as $order) {
-                echo $order->getIncrementId() . "\n";
                 $this->logger->info('Canceling order (idle for more than ' . $delay . ' minutes): ' . $order->getIncrementId());
                 $comment = __('Order cancelled because it was idle for more than ' . $delay . ' minutes');
                 $order->cancel();
-                $order->addStatusHistoryComment($comment)
+                $order->addCommentToStatusHistory($comment)
                     ->setIsCustomerNotified(false);
-                $order->save();
+                $this->orderRepository->save($order);
             }
         }
     }

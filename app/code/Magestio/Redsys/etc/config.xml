@@ -25,6 +25,7 @@
                 <autoinvoice>1</autoinvoice>
                 <sendinvoice>1</sendinvoice>
                 <recovery_cart>1</recovery_cart>
+                <cancel_pending_orders>0</cancel_pending_orders>
                 <cancel_pending_orders_delay>360</cancel_pending_orders_delay>
 
                 <!-- This avoid send confirmation email in place order function -->
