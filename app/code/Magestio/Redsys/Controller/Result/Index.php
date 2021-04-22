@@ -9,7 +9,6 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Service\InvoiceService;
-use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
@@ -19,13 +18,13 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\OrderSender;
-use Magento\Framework\DB\Transaction;
-use Magento\Sales\Model\Order\Payment\Transaction as PaymentTransaction;
 use Magento\Framework\DB\TransactionFactory;
+use Magento\Sales\Model\Order\Payment\Transaction as TransactionBuilder;
 use Magestio\Redsys\Helper\Helper;
 use Magestio\Redsys\Logger\Logger;
 use Magestio\Redsys\Model\RedsysApi;
 use Magestio\Redsys\Model\ConfigInterface;
+use Magestio\Redsys\Model\Currency;
 
 /**
  * Class Index
@@ -60,6 +59,11 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
     protected $orderRepository;
 
     /**
+     * @var transactionBuilder
+     */
+    protected $transactionBuilder;
+
+    /**
      * @var OrderSender
      */
     protected $orderSender;
@@ -85,6 +89,31 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
     protected $transactionFactory;
 
     /**
+     * @var string
+     */
+    protected $authorizationCode;
+
+    /**
+     * @var string
+     */
+    protected $responseCode;
+
+    /**
+     * @var Currency
+     */
+    protected $currency;
+
+    /**
+     * @var Currency
+     */
+    protected $currencyList;
+
+    /**
+     * @var string
+     */
+    protected $amount;
+
+    /**
      * @var RedsysApi
      */
     protected $api = null;
@@ -98,7 +127,9 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
      * @param TransactionFactory $transactionFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param OrderRepositoryInterface $orderRepository
+     * @param TransactionBuilder $transactionBuilder
      * @param OrderSender $orderSender
+     * @param Currency $currencyList
      * @param Helper $helper
      * @param Logger $logger
      */
@@ -110,7 +141,9 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
         TransactionFactory $transactionFactory,
         ScopeConfigInterface $scopeConfig,
         OrderRepositoryInterface $orderRepository,
+        TransactionBuilder $transactionBuilder,
         OrderSender $orderSender,
+        Currency $currencyList,
         Helper $helper,
         Logger $logger
     )
@@ -122,7 +155,9 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
         $this->transactionFactory = $transactionFactory;
         $this->scopeConfig = $scopeConfig;
         $this->orderRepository = $orderRepository;
+        $this->transactionBuilder = $transactionBuilder;
         $this->orderSender = $orderSender;
+        $this->currencyList = $currencyList;
         $this->helper = $helper;
         $this->logger = $logger;
     }
@@ -154,14 +189,19 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
     protected function process()
     {
         try {
-
             $this->validate();
             $api = $this->getApi();
             $responseCode = intval($api->getParameter('Ds_Response'));
+            $dsMerchantParameters = $this->getMerchantParameters($this->getRequest()->getParam('Ds_MerchantParameters'));
+
+            /* Generate transaction */
+            $this->createTransaction($this->getOrder(), $dsMerchantParameters);
 
             if ($responseCode <= 99) {
                 $this->processOrder();
-                $this->processInvoice();
+                if (ConfigInterface::XML_PATH_AUTOINVOICE && $this->getOrder()->canInvoice()) {
+                    $this->generateInvoice($this->getOrder(), true);
+                }
             } else {
                 $errorMessage = $this->helper->messageResponse($responseCode) . " " . __("(response:%1)", $responseCode);
                 $this->helper->cancelOrder($this->getOrder(), $errorMessage);
@@ -170,7 +210,6 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
         } catch (\Exception $e) {
             $this->logger->critical($e);
         }
-
     }
 
     /**
@@ -179,7 +218,6 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
     private function processOrder()
     {
         $order = $this->getOrder();
-        $payment = $order->getPayment();
 
         $state = Order::STATE_PROCESSING;
         $status = $this->helper->getOrderStatusByState($order, $state);
@@ -187,73 +225,82 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
         $order->setState($state);
         $order->setStatus($status);
 
-        $transaction = $payment->addTransaction(PaymentTransaction::TYPE_CAPTURE);
         $api = $this->getApi();
-        $responseCode = intval($api->getParameter('Ds_Response'));
-        $authorisationCode = $api->getParameter('Ds_AuthorisationCode');
-        $message = $payment->prependMessage(__('TPV payment accepted. (response: %1, authorization: %2)', $responseCode, $authorisationCode));
-        $payment->addTransactionCommentsToOrder($transaction, $message);
+        $this->responseCode = intval($api->getParameter('Ds_Response'));
+        $this->authorizationCode = $api->getParameter('Ds_AuthorisationCode');
+        $this->currency = $this->currencyList->getCurrencyFromCode($api->getParameter('Ds_Currency'));
+        $message = __('PSP payment accepted. (response: %1, authorization: %1)', $this->responseCode, $this->authorizationCode);
+        $order->addStatusHistoryComment($message);
 
         $this->orderRepository->save($order);
 
         // send Order email
         if ($order->getCanSendNewEmailFlag()) {
             try {
-                    $this->orderSender->send($order);
+                $this->orderSender->send($order, true);
             } catch (\Exception $e) {
                 $this->logger->critical($e);
             }
         }
-
     }
 
     /**
-     * Creates the invoice and sends the email
-     *
+     * @param $order
+     * @param $customerNotifyInvoice
      * @throws LocalizedException
      */
-    private function processInvoice()
+    private function generateInvoice($order, $customerNotifyInvoice)
     {
-        if ($this->scopeConfig->getValue(ConfigInterface::XML_PATH_AUTOINVOICE, ScopeInterface::SCOPE_STORE)) {
-            $order = $this->getOrder();
+        $invoice = $this->invoiceService->prepareInvoice($order);
+        $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
+        $invoice->register();
+        $invoice->getOrder()->setCustomerNoteNotify($customerNotifyInvoice);
+        $invoice->getOrder()->setIsInProcess(true);
+        $invoice->save();
 
-            if (!$order->canInvoice()) {
-                throw new LocalizedException(__('The order does not allow an invoice to be created.'));
-            }
-
-            $invoice = $this->invoiceService->prepareInvoice($order);
-
-            if (!$invoice) {
-                throw new LocalizedException(__('We can\'t save the invoice right now.'));
-            }
-
-            if (!$invoice->getTotalQty()) {
-                throw new LocalizedException(__('You can\'t create an invoice without products.'));
-            }
-
-            $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
-
-            $invoice->register();
-
-            $invoice->getOrder()->setCustomerNoteNotify(false);
-            $invoice->getOrder()->setIsInProcess(true);
-
-            $transactionSave = $this->transactionFactory
-                ->create()
-                ->addObject($invoice)
-                ->addObject($invoice->getOrder()
-                );
-            $transactionSave->save();
-
-            // send invoice email
-            if ($this->scopeConfig->getValue(ConfigInterface::XML_PATH_SENDINVOICE, ScopeInterface::SCOPE_STORE)) {
-                try {
-                    $this->invoiceSender->send($invoice);
-                } catch (\Exception $e) {
-                    $this->logger->critical($e);
-                }
-            }
+        if ($customerNotifyInvoice) {
+            $this->invoiceSender->send($invoice);
+            $order->addStatusHistoryComment(__('TPV Redsys: Generated invoice %1 and sent it to customer', $invoice->getIncrementId()));
+            $this->logger->info(__('Generated invoice: %1 and sent it to customer', $invoice->getIncrementId()));
+        } else {
+            $order->addStatusHistoryComment(__('TPV Redsys: Generated order Invoice %1', $invoice->getIncrementId()));
+            $this->logger->info(__('Generated invoice: %1', $invoice->getIncrementId()));
         }
+
+        $order->setState(\Magento\Sales\Model\Order::STATE_PROCESSING);
+        $order->addStatusToHistory('processing', __('TPV Redsys: Updated order\'s status with value: %1', 'processing'), $customerNotifyInvoice);
+        $this->logger->info(__('Updated order\'s status with value: %1', 'processing'));
+        $order->save();
+    }
+
+    /**
+     * @param $order
+     * @param $paymentData
+     * @throws LocalizedException
+     */
+    private function createTransaction($order, $paymentData)
+    {
+        $paymentTransactionId = $order->getIncrementId() . '_' . $order->getId() . '-' . $paymentData['Ds_Response'];
+        $payment = $order->getPayment();
+        $payment->setMethod('redsys');
+        $payment->setAdditionalInformation([\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => $paymentData]);
+
+        $transaction = $this->transactionBuilder;
+        $transaction->setPayment($payment);
+        $transaction->setOrder($order);
+        $transaction->setTxnId($paymentTransactionId);
+        $transaction->setTxnType('order');
+        $transaction->setAdditionalInformation(\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS, $paymentData);
+        $transaction->setFailSafe(true);
+
+        $payment->addTransactionCommentsToOrder(
+            $transaction,
+            __('TPV Redsys: Generated transaction %1', $paymentTransactionId)
+        );
+        $payment->save();
+        $transaction->save();
+
+        $this->logger->info(__('Generated transaction %1', $paymentTransactionId));
     }
 
     /**
@@ -281,6 +328,23 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
             $this->api->decodeMerchantParameters($data);
         }
         return $this->api;
+    }
+
+    public function getMerchantParameters($parameters)
+    {
+        $decoded = $this->decodeParameters($parameters);
+
+        return $this->JsonToArray($decoded);
+    }
+
+    protected function decodeParameters($data)
+    {
+        return base64_decode(strtr($data, '-_', '+/'));
+    }
+
+    protected function JsonToArray($data)
+    {
+        return json_decode($data, true);
     }
 
     /**
@@ -317,16 +381,14 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
             throw new LocalizedException(__('Errors in POST data'));
         }
 
-        $amount = $api->getParameter('Ds_Amount');
+        $this->amount = $api->getParameter('Ds_Amount');
         $orderId = $api->getParameter('Ds_Order');
-        $order = $this->getOrder($orderId);
+        $order = $this->getOrder();
 
         $transaction_amount = number_format($order->getBaseGrandTotal(), 2, '', '');
         $amountOrder = (float)$transaction_amount;
-        if ($amountOrder != $amount) {
+        if ($amountOrder != $this->amount) {
             throw new LocalizedException(__("Amount is diferent"));
         }
-
     }
-
 }
