@@ -6,6 +6,7 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Checkout\Model\Session;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magestio\Redsys\Helper\Helper;
@@ -17,7 +18,6 @@ use Magestio\Redsys\Logger\Logger;
  */
 class Index extends Action
 {
-
     /**
      * @var Session
      */
@@ -44,22 +44,31 @@ class Index extends Action
     protected $order = null;
 
     /**
-     * Index constructor.
-     * @param Context $context
-     * @param Session $checkoutSession
-     * @param CartRepositoryInterface $quoteRepository
-     * @param Helper $helper
-     * @param Logger $logger
+     * @var CustomerSession
      */
-	public function __construct(
-		Context $context,
+    protected $customerSession;
+
+    /**
+     * Index constructor.
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param \Magestio\Redsys\Helper\Helper $helper
+     * @param \Magestio\Redsys\Logger\Logger $logger
+     */
+    public function __construct(
+        Context $context,
         Session $checkoutSession,
+        CustomerSession $customerSession,
         CartRepositoryInterface $quoteRepository,
         Helper $helper,
         Logger $logger
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->checkoutSession = $checkoutSession;
+        $this->customerSession = $customerSession;
         $this->quoteRepository = $quoteRepository;
         $this->helper = $helper;
         $this->logger = $logger;
@@ -90,12 +99,20 @@ class Index extends Action
     /**
      * @param OrderInterface $order
      */
-    private function recoveryCart($order)
+    private function recoveryCart(OrderInterface $order)
     {
         if ($order->getEntityId()) {
             try {
                 $quote = $this->quoteRepository->get($order->getQuoteId());
                 $quote->setIsActive(1)->setReservedOrderId(null);
+
+                if ($this->customerSession->isLoggedIn()) {
+                    $quote->setData('customer_id', $this->customerSession->getCustomer()->getId());
+                    $quote->setData('customer_is_guest', 0);
+                    $quote->setData('checkout_method', 'NULL');
+                    $quote->setData('customer_group_id', $this->customerSession->getCustomer()->getGroupId());
+                }
+
                 $this->quoteRepository->save($quote);
                 $this->checkoutSession->replaceQuote($quote)->unsLastRealOrderId();
             } catch (NoSuchEntityException $e) {
@@ -103,5 +120,4 @@ class Index extends Action
             }
         }
     }
-
 }
