@@ -23,9 +23,18 @@
 
 ### Instalación
 
+#### Utilizando composer
+
+```
+    composer require magestio/magento-2-redsys
+```
+
+#### Por copia directa de archivos
+
 * Descarga la extensión
 * Descomprime el archivo
-* Copia el contenido del archivo a la carpeta raíz de Magento
+* Crea el directorio app/code/Magestio/Redsys  
+* Copia el contenido del archivo a esa carpeta
 
 
 ### Habilitar extensión
@@ -40,7 +49,7 @@ php bin/magento setup:static-content:deploy
 
 ### Requisitos
 
-* Compatible with Magento 2.3.+
+* Compatible with Magento 2.3.+ y 2.4.+
 
 ### Soporte técnico
 
