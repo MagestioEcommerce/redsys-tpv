@@ -166,7 +166,7 @@ class RedsysFactory
         $redsysObj->setParameter("Ds_Merchant_Module", "magestio_redsys");
 
         // EMV 3DS data (for PSD2 compliance)
-        if ($enableEMV3DS) {
+        if ($enableEMV3DS && $method == ConfigInterface::REDSYS_PAYMETHODS) {
             $redsysObj->setParameter("DS_MERCHANT_EMV3DS", $this->helper->generateMerchantEMV3DSData($this->getOrder()));
         }
 
