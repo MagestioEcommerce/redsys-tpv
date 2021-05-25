@@ -16,6 +16,8 @@ use Magento\Framework\Exception\MailException;
 use Magestio\Redsys\Model\Language;
 use Magestio\Redsys\Model\Currency;
 use Magestio\Redsys\Model\Response;
+use Magestio\Redsys\Model\CountryIso;
+use Magento\Customer\Model\Session;
 
 /**
  * Class Helper
@@ -60,8 +62,17 @@ class Helper extends AbstractHelper
     protected $response;
 
     /**
+     * @var Session
+     */
+    private $session;
+
+    /**
+     * @var CountryIso
+     */
+    private $countryIso;
+
+    /**
      * Helper constructor.
-     * @param Context $context
      * @param OrderFactory $orderFactory
      * @param OrderManagementInterface $orderManagement
      * @param OrderStatusHistoryInterfaceFactory $historyFactory
@@ -71,14 +82,15 @@ class Helper extends AbstractHelper
      * @param Response $response
      */
     public function __construct(
-        Context $context,
         OrderFactory $orderFactory,
         OrderManagementInterface $orderManagement,
         OrderStatusHistoryInterfaceFactory $historyFactory,
         StatusResolver $statusResolver,
         Language $language,
         Currency $currency,
-        Response $response
+        Response $response,
+        Session $session,
+        CountryIso $countryIso
     ) {
         $this->orderFactory = $orderFactory;
         $this->orderManagement = $orderManagement;
@@ -87,6 +99,8 @@ class Helper extends AbstractHelper
         $this->language = $language;
         $this->currency = $currency;
         $this->response = $response;
+        $this->session = $session;
+        $this->countryIso = $countryIso;
     }
 
     /**
@@ -174,6 +188,44 @@ class Helper extends AbstractHelper
             throw new LocalizedException(__('The order no longer exists.'));
         }
         return $order;
+    }
+
+    /**
+     * @param $order
+     * @return array
+     */
+    public function generateMerchantEMV3DSData($order)
+    {
+        $billingAddress = $order->getBillingAddress();
+        $shippingAddress = $order->getShippingAddress();
+
+        if (!$shippingAddress) {
+            $shippingAddress = $billingAddress;
+        }
+
+        $emv3dsData['cardholderName'] = $order->getData('customer_firstname') . ' ' . $order->getData('customer_lastname');
+        $emv3dsData['Email'] = $order->getData('customer_email');
+
+        // Shipping
+        $emv3dsData['shipAddrLine1'] = $shippingAddress->getStreet(1);
+        $emv3dsData['shipAddrLine2'] = $shippingAddress->getStreet(2);
+        $emv3dsData['shipAddrCity'] = $shippingAddress->getCity();
+        $emv3dsData['shipAddrPostCode'] = $shippingAddress->getPostcode();
+        $emv3dsData['shipAddrCountry'] = $this->countryIso->getCountryNumericCode($shippingAddress->getCountryId());
+
+        // Billing
+        $emv3dsData['billAddrLine1'] = $billingAddress->getStreet(1);
+        $emv3dsData['billAddrLine2'] = $billingAddress->getStreet(2);
+        $emv3dsData['billAddrCity'] = $billingAddress->getCity();
+        $emv3dsData['billAddrPostCode'] = $billingAddress->getPostcode();
+        $emv3dsData['billAddrCountry'] = $this->countryIso->getCountryNumericCode($billingAddress->getCountryId());
+
+        $emv3dsData['threeDSRequestorAuthenticationInfo'] = '01';
+        if($this->session->isLoggedIn()) {
+            $emv3dsData['threeDSRequestorAuthenticationInfo'] = '02';
+        }
+
+        return $emv3dsData;
     }
 
 }

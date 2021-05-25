@@ -38,5 +38,6 @@ interface ConfigInterface
     const XML_PATH_ALLOWSPECIFIC                = 'payment/redsys/allowspecific';
     const XML_PATH_SPECIFICCOUNTRY              = 'payment/redsys/specificcountry';
     const XML_PATH_SORT_ORDER                   = 'payment/redsys/sort_order';
+    const XML_PATH_EMV_3DS                      = 'payment/redsys/emv_3ds';
 
 }
