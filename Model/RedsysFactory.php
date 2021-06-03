@@ -138,6 +138,7 @@ class RedsysFactory
         $commerce_num = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_COMMERCE_NUM, ScopeInterface::SCOPE_STORE);
         $terminal = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_TERMINAL, ScopeInterface::SCOPE_STORE);
         $trans = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_TRANSACTION_TYPE, ScopeInterface::SCOPE_STORE);
+        $enableEMV3DS = $this->scopeConfig->getValue(ConfigInterface::XML_PATH_EMV_3DS, ScopeInterface::SCOPE_STORE);
 
         // Redirect Result URL
         $orderId = $this->getOrder()->getIncrementId();
@@ -163,6 +164,11 @@ class RedsysFactory
         $redsysObj->setParameter("Ds_Merchant_MerchantName", $commerce_name);
         $redsysObj->setParameter("Ds_Merchant_PayMethods", $method);
         $redsysObj->setParameter("Ds_Merchant_Module", "magestio_redsys");
+
+        // EMV 3DS data (for PSD2 compliance)
+        if ($enableEMV3DS && $method == ConfigInterface::REDSYS_PAYMETHODS) {
+            $redsysObj->setParameter("DS_MERCHANT_EMV3DS", $this->helper->generateMerchantEMV3DSData($this->getOrder()));
+        }
 
         return $redsysObj;
     }

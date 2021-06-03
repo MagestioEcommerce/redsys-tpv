@@ -38,3 +38,5 @@
 "Cancel Pending Orders","Cancelar pedidos pendientes"
 "Delay to cancel Pending Orders (in minutes)","Tiempo de espera antes de cancelar pedidos pendientes (en minutos)"
 "Minimum time is 5 minutes","Mínimo 5 minutos"
+"Send Additional Order data for EMV 3DS","Enviar datos de pedido adicionales para EMV 3DS"
+"Customer redirected to Redsys Payment Gateway","Cliente redireccionado a la pasarela de Redsys"

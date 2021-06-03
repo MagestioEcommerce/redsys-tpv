@@ -83,6 +83,10 @@
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/redsys/sort_order</config_path>
                     </field>
+                    <field id="emv_3ds" translate="label" type="select" sortOrder="40" showInDefault="1" showInStore="1" showInWebsite="1">
+                        <label>Send Additional Order data for EMV 3DS</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
                 </group>
                 <group id="bizum" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Bizum</label>
