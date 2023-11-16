@@ -4,6 +4,8 @@
 <a href="https://magestio.com/"><img src="https://magestio.com/wp-content/uploads/magestio-logo@4x-8.png" align="left" width="120" height="25" ></a>
 </p>
 
+#
+
 ### Características
 
 * Desarrollado con la nueva API Gateway Payment de Magento 2 [Magento 2 Payment Gateway API](https://devdocs.magento.com/guides/v2.2/payments-integrations/payment-gateway/payment-gateway-intro.html)
