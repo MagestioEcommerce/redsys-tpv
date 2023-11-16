@@ -2,7 +2,6 @@
 
 namespace Magestio\Redsys\Controller\Redirect;
 
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
@@ -13,7 +12,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
  * Class Index
  * @package Magestio\Redsys\Controller\Redirect
  */
-class Index extends Action implements HttpGetActionInterface
+class Index implements HttpGetActionInterface
 {
 
     /**

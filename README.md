@@ -1,6 +1,6 @@
 # Extension TPV Redsys para Magento 2
 
-[![N|Solid](https://magestio.com/wp-content/uploads/logo_web_r.png)](https://magestio.com)
+[![N|Solid](https://magestio.com/wp-content/uploads/magestio-logo@4x-8.png)](https://magestio.com)
 
 ### Características
 
@@ -53,4 +53,4 @@ php bin/magento setup:static-content:deploy
 
 ### Soporte técnico
 
-* Web: [https://magestio.com/](https://magestio.com/)
+* Web: [Agencia Ecommerce Magestio](https://magestio.com/)

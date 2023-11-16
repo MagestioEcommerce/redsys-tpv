@@ -1,0 +1,38 @@
+Order canceled.;Pedido cancelado.
+We are sorry, something was wrong with payment. Try again or select another payment method.;Lamentamos, algo estava errado com o pagamento. Tente novamente ou selecione outro método de pagamento.
+Customer redirected to Redsys Payment Gateway;Cliente redirecionado para Redsys Payment Gateway
+Redirecting...;Redirecionando...
+(response:%1);(resposta:% 1)
+TPV payment accepted. (response: %1;Pagamento TPV aceito. (resposta:% 1
+The order does not allow an invoice to be created.;O pedido não permite a criação de uma fatura.
+We can't save the invoice right now.;Não podemos salvar a fatura agora.
+You can't create an invoice without products.;Vocé não pode criar uma fatura sem produtos.
+Incorrect response from Redsys.;Resposta incorreta de Redsys.
+Errors in POST data;Erros nos dados POST
+Amount is diferent;Quantidade é diferente
+Order cancelled because it was idle for more than ' . . ' minutes;Pedido cancelado porque ficou inativo por mais de '. . ' minutos
+The order no longer exists.;O pedido não existe mais.
+Email: ;O email:
+Test Enviroment;Ambiente de Teste
+Real Enviroment;Ambiente real
+Redirecting to Redsys TPV... Please wait.;Redirecionando para Redsys TPV ... Aguarde.
+Thanks for trusting us. In a few seconds you will be redirected to the payment platform.;Obrigado por confiar em nós. Em alguns segundos você será redirecionado para a plataforma de pagamento
+"If your browser does not redirect you automatically click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>here</a> to carry out the payment.";"Se o seu navegador não redirecionar,  vocé clica automaticamente <a href='javascript:void(0)' onclick='document.redsys_form.submit();'> aqui </a> para efetuar o pagamento."
+Place Order;Faça a encomenda
+Commerce Name;Nome comercial
+Commerce Number(FUC);Número comercial (FUC)
+Environment;Ambiente
+Secret Encrypted Key (SHA-256);Chave secreta criptografada (SHA-256)
+Terminal Number;Número Terminal
+Transaction Type;Tipo de transação
+Allow TPV Languages;Permitir idiomas TPV
+Create invoice automatically;Criar fatura automaticamente
+Send Email Customer Invoice;Enviar e-mail fatura do cliente
+Recovery cart;Carrinho de recuperação
+Cancel Pending Orders;Cancelar pedidos pendentes
+Delay to cancel Pending Orders (in minutes);Atraso para cancelar pedidos pendentes (em minutos)
+Tarjeta de crédito;Tarjeta de crédito
+Enabled;Habilitado
+Show icon;Mostrar Icone
+Send Additional Order data for EMV 3DS;Enviar dados adicionais do pedido para EMV 3DS
+Bizum;Bizum
