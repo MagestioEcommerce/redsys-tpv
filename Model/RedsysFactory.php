@@ -34,6 +34,11 @@ class RedsysFactory
     protected $orderFactory;
 
     /**
+     * @var Helper
+     */
+    protected $helper;
+
+    /**
      * @var UrlInterface
      */
     protected $url;
