@@ -1,0 +1,42 @@
+Redsys,Redsys
+Enabled,Habilitat
+Title,Títol
+Environment,Entorn
+Real Enviroment: https://sis.redsys.es/sis/realizarPago/utf-8 Test Enviroment: https://sis-t.redsys.es:25443/sis/realizarPago/utf-8,Entorn real: https://sis.redsys.es/sis/realizarPago/utf-8 Entorn de test: https://sis-t.redsys.es:25443/sis/realizarPago/utf-8
+Commerce Name,Nom del comerç
+Commerce Number(FUC),Número del comerç (FUC)
+Secret Encrypted Key (SHA-256),Clau secreta d’encriptació (SHA-256)
+Terminal Number,Número de terminal
+Transaction Type,Tipus de transacció
+Allow TPV Languages,Permetre idiomes en el TPV
+Create invoice automatically,Crear factura automàticament
+Only if payment is completed successfully,Només si el pagament s’ha realitzat amb èxit
+Send Email Customer Invoice,Enviar email de factura al client
+Recovery cart,Recuperar la cistella
+In case of failure the client does not lose Cart,En caso de fallida el client no perd la cistella
+Payment From Applicable Countries,Aplicar el pagament per país
+Payment From Specific Countries,Aplicar el pagament als següents  països
+Sort Order,Ordre d’aparició
+Order canceled.,Comanda cancel·lada
+"We are sorry, something was wrong with payment. Try again or select another payment method.","Ho sentim, el pagament ha fallat. Torni a provar-ho o seleccioni un altre mètode de pagament."
+Redirecting...,Redireccionant...
+(response:%1),(resposta:%1)
+"TPV payment accepted. (response: %1, authorization: %2)","Pagament acceptat. (resposta: %1, autorització: %2)"
+The order does not allow an invoice to be created.,La comanda no permet la creació d’una factura.
+We can't save the invoice right now.,No es pot guardar la factura.
+You can't create an invoice without products.,No es pot crear una factura sense productes.
+Incorrect response from Redsys.,Resposta incorrecta des de Redsys.
+Errors in POST data,Errors en el POST
+Amount is diferent,La quantitat és diferent
+The order no longer exists.,La comanda no existeix.
+Email: ,Email: 
+Test Enviroment,Entorn de test
+Real Enviroment,Entorn real
+Redirecting to Redsys TPV... Please wait.,"Redireccionant al TPV de Redsys. Si us plau, esperi."
+Thanks for trusting us. In a few seconds you will be redirected to the payment platform.,"Gràcies per confiar en nosaltres. En uns segons, se’l redirigirà a la plataforma de pagament."
+If your browser does not redirect you automatically click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>here</a> to carry out the payment.,"Si el seu navegador no ell redirigeix automàticament, faci click <a href='javascript:void(0)' onclick='document.redsys_form.submit();'>aquí</a> per a continuar amb el pagament."
+Cancel Pending Orders,Cancel·lar comandes pendents
+Delay to cancel Pending Orders (in minutes),Temps d’espera abans de cancel·lar comandes pendents (en minuts)
+Minimum time is 5 minutes,Mínim 5 minuts
+Send Additional Order data for EMV 3DS,Enviar dades de comanda addicionals para EMV 3DS
+Customer redirected to Redsys Payment Gateway,Client redireccionat a la passarel·la de Redsys
